@@ -3,7 +3,7 @@
 from banjo.models import Model, StringField, IntegerField, FloatField, BooleanField
 
 class Kpop_profile(Model):
-    artist_name = IntegerField()
+    artist_name = StringField()
     debut = StringField()
     members = StringField()
     fandom_name = StringField()
@@ -28,6 +28,10 @@ class Kpop_profile(Model):
             'views': self.views,
             'comment': self.comment,
         }
+
+    def change_comment(self, new_comment):
+        self.comment = new_comment
+        self.save()
 
     def increase_likes(self):
         self.likes += 1
