@@ -4,7 +4,7 @@ from banjo.urls import route_get, route_post
 from .models import Kpop_profile
 from settings import BASE_URL
 
-#end point for get all kpop profiles
+# this route gets all of the kpop profiles
 @route_get(BASE_URL + 'all')
 def all_kpop_profiles(args):
     kpop_profile_list = []
@@ -14,6 +14,7 @@ def all_kpop_profiles(args):
 
     return {'kpop_profile':kpop_profile_list}
 
+# this route picks and presents a random kpop profile 
 @route_get(BASE_URL + 'random')
 def random_kpop_profile(args):
     one_kpop_profile = Kpop_profile.objects.order_by('?').first()
@@ -21,6 +22,7 @@ def random_kpop_profile(args):
     
     return {'kpop_profile': one_kpop_profile.json_response()}
 
+# this route displays the chosen kpop profile by the user
 @route_get(BASE_URL + 'one', args={'artist_name': str})
 def one_kpop_profile(args):
     if Kpop_profile.objects.filter(artist_name=args['artist_name']).exists():
@@ -31,6 +33,7 @@ def one_kpop_profile(args):
     else:
         return {'error': 'no kpop_profile exists'}
 
+# this route allows the user to insert a whole new kpop profile to the API
 @route_post(BASE_URL + 'new', args={'artist_name':str, 'debut': str, 'members':str, 'fandom_name':str, 'fandom_colour':str, 'company':str, 'comment':str})
 def new_kpop_profile(args):
     new_kpop_profile = Kpop_profile(
@@ -49,6 +52,7 @@ def new_kpop_profile(args):
     
     return {'kpop_profile': new_kpop_profile.json_response()}
 
+# the user can use this route to like the kpop artist profile that they admire 
 @route_post(BASE_URL + 'likes', args={'artist_name':str})
 def increase_likes(args):  
     if Kpop_profile.objects.filter(artist_name=args['artist_name']).exists():
@@ -60,6 +64,7 @@ def increase_likes(args):
     else:
         return {'error': 'no kpop_profile exists'}
 
+# this route allows the user to view the range of kpop groups under the chosen company
 @route_get(BASE_URL + 'search_company', args={'company':str})
 def search_company(args):
     kpop_profile_search_list = []
@@ -69,7 +74,7 @@ def search_company(args):
     
     return {'kpop_profile':kpop_profile_search_list}
 
-#This is my first MVPs of my project
+# this is one of my MVPs, which this route allows the user to comment on different kpop artist profiles, and once the new comment is written, the API will automatically carry out an update, where the old comment will be replaced
 @route_post(BASE_URL + 'change_comment', args={'artist_name':str, 'new_comment': str})
 def change_comment(args):  
     if Kpop_profile.objects.filter(artist_name=args['artist_name']).exists():
@@ -81,7 +86,7 @@ def change_comment(args):
     else:      
         return {'error': 'no kpop_profile exists'}
 
-#This is one of the MVP of my project, which the end-point is showing the user a most updated podium of the top 5 artists with the most rannking
+# this is my other MVP, which this route shows the user a most updated podium of the top 5 artists with the most likes
 @route_get(BASE_URL + 'top_5')
 def top_5(args):
     top_5 = []
@@ -91,6 +96,7 @@ def top_5(args):
     
     return {'kpop_profile': top_5}
 
+# this route displays a general ranking of all the kpop profiles, according to the number of likes they receive
 @route_get(BASE_URL + 'rankings')
 def rankings(args):
     rankings = []

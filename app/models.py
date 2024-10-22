@@ -3,6 +3,7 @@
 from banjo.models import Model, StringField, IntegerField, FloatField, BooleanField
 
 class Kpop_profile(Model):
+    # these are the fields of my API, with their crresponding data type 
     artist_name = StringField()
     debut = StringField()
     members = StringField()
@@ -14,6 +15,7 @@ class Kpop_profile(Model):
     views = IntegerField()
     comment = StringField()
 
+    # this method returns the json response of the corresponding kpop profile, with the value of its different fields
     def json_response(self):
         return {
             'id':self.id,
@@ -29,18 +31,22 @@ class Kpop_profile(Model):
             'comment': self.comment,
         }
 
+    # this method updates the comment of the individual kpop profile to the most recent one
     def renew_comment(self, new_comment):
         self.comment = new_comment
         self.save()
 
+    # this method increases the likes of the kpop profile by 1
     def increase_likes(self):
         self.likes += 1
         self.save()
     
+    # this method increases the views of the kpop profile by 1
     def increase_views(self):
         self.views += 1
         self.save()
 
+    # this method calculates popularity using likes and views
     def calculate_popularity(self):
         self.popularity = self.likes/self.views * 100
         self.save()
