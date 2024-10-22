@@ -10,15 +10,17 @@ def all_kpop_profiles(args):
     kpop_profile_list = []
     for kpop_profile in Kpop_profile.objects.all():
         kpop_profile.increase_views()
+        kpop_profile.calculate_popularity()
         kpop_profile_list.append(kpop_profile.json_response())
 
     return {'kpop_profile':kpop_profile_list}
 
-# this route picks and presents a random kpop profile 
+# this route displays a random kpop profile 
 @route_get(BASE_URL + 'random')
 def random_kpop_profile(args):
     one_kpop_profile = Kpop_profile.objects.order_by('?').first()
     one_kpop_profile.increase_views()
+    one_kpop_profile.calculate_popularity()
     
     return {'kpop_profile': one_kpop_profile.json_response()}
 
@@ -27,17 +29,18 @@ def random_kpop_profile(args):
 def one_kpop_profile(args):
     if Kpop_profile.objects.filter(artist_name=args['artist_name']).exists():
         one_kpop_profile = Kpop_profile.objects.get(artist_name=args['artist_name'])
-        one_kpop_profile.increase_views()    
+        one_kpop_profile.increase_views()   
+        one_kpop_profile.calculate_popularity() 
         return {'kpop_profile': one_kpop_profile.json_response()}
     
     else:
         return {'error': 'no kpop_profile exists'}
 
 # this route allows the user to insert a whole new kpop profile to the API
-@route_post(BASE_URL + 'new', args={'artist_name':str, 'debut': str, 'members':str, 'fandom_name':str, 'fandom_colour':str, 'company':str, 'comment':str})
+@route_post(BASE_URL + 'new', args={'d':str, 'debut': str, 'members':str, 'fandom_name':str, 'fandom_colour':str, 'company':str, 'comment':str})
 def new_kpop_profile(args):
     new_kpop_profile = Kpop_profile(
-        artist_name = args['artist_name'],
+        artist_name= args['artist_name'],
         debut = args['debut'],
         members = args['members'],
         fandom_name = args['fandom_name'],
@@ -59,6 +62,7 @@ def increase_likes(args):
         one_kpop_profile = Kpop_profile.objects.get(artist_name=args['artist_name'])
         one_kpop_profile.increase_views()
         one_kpop_profile.increase_likes()
+        one_kpop_profile.calculate_popularity()
         return {'kpop_profile':one_kpop_profile.json_response()}
     
     else:
@@ -70,6 +74,7 @@ def search_company(args):
     kpop_profile_search_list = []
     for kpop_profile in Kpop_profile.objects.filter(company=args['company']):
         kpop_profile.increase_views()
+        kpop_profile.calculate_popularity()
         kpop_profile_search_list.append(kpop_profile.json_response())
     
     return {'kpop_profile':kpop_profile_search_list}
@@ -81,6 +86,7 @@ def change_comment(args):
         one_kpop_profile = Kpop_profile.objects.get(artist_name=args['artist_name'])
         one_kpop_profile.renew_comment(args['new_comment'])
         one_kpop_profile.increase_views() 
+        one_kpop_profile.calculate_popularity()
         return {'kpop_profile':one_kpop_profile.json_response()}
     
     else:      
@@ -92,6 +98,7 @@ def top_5(args):
     top_5 = []
     for kpop_profile in Kpop_profile.objects.order_by('-likes')[:5]:
         kpop_profile.increase_views()
+        kpop_profile.calculate_popularity()
         top_5.append(kpop_profile.json_response())    
     
     return {'kpop_profile': top_5}
@@ -102,6 +109,7 @@ def rankings(args):
     rankings = []
     for kpop_profile in Kpop_profile.objects.order_by('-likes'):
         kpop_profile.increase_views()
+        kpop_profile.calculate_popularity()
         rankings.append(kpop_profile.json_response())
     
     return {'kpop_profile':rankings}

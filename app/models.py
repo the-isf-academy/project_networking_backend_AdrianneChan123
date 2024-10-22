@@ -46,7 +46,7 @@ class Kpop_profile(Model):
         self.views += 1
         self.save()
 
-    # this method calculates popularity using likes and views
+    # this method calculates the percentage of popularity using likes and views, and in the views this method is constantly after increasing views  to update the popularity of the kpop profile to the latest version
     def calculate_popularity(self):
-        self.popularity = self.likes/self.views * 100
+        self.popularity = (self.likes/self.views) * 100
         self.save()
