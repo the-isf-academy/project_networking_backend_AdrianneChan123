@@ -29,10 +29,18 @@ class Kpop_profile(Model):
             'comment': self.comment,
         }
 
-    def change_comment(self, new_comment):
+    def renew_comment(self, new_comment):
         self.comment = new_comment
         self.save()
 
     def increase_likes(self):
         self.likes += 1
+        self.save()
+    
+    def increase_views(self):
+        self.views += 1
+        self.save()
+
+    def calculate_popularity(self):
+        self.popularity = self.likes/self.views * 100
         self.save()
