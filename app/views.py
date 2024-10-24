@@ -37,7 +37,7 @@ def one_kpop_profile(args):
         return {'error': 'no kpop_profile exists'}
 
 # this route allows the user to insert a whole new kpop profile to the API
-@route_post(BASE_URL + 'new', args={'d':str, 'debut': str, 'members':str, 'fandom_name':str, 'fandom_colour':str, 'company':str, 'comment':str})
+@route_post(BASE_URL + 'new', args={'artist_name':str, 'debut': str, 'members':str, 'fandom_name':str, 'fandom_colour':str, 'company':str, 'comment':str})
 def new_kpop_profile(args):
     new_kpop_profile = Kpop_profile(
         artist_name= args['artist_name'],
