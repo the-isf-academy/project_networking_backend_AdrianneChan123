@@ -46,5 +46,7 @@ Here's what is included:
 **To start a Banjo server:** `banjo` 
 - [Banjo Documentation](https://the-isf-academy.github.io/banjo_docs/)
 
+BASE_URL = "http://127.0.0.1:5000/kpop_profiles/"
+
 
 
